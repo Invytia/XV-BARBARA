@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis XV Años | Bárbara Fabiana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --pink-light: #fbebf0;
+            --pink-main: #e8a2b5;
+            --pink-dark: #c06c84;
+            --silver-light: #f5f5f5;
+            --silver-main: #b0b0b0;
+            --silver-dark: #7a7a7a;
+            --text-main: #4a4a4a;
+            --font-title: 'Great Vibes', cursive;
+            --font-headings: 'Cinzel', serif;
+            --font-text: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--text-main);
+            background-color: var(--pink-light);
+            overflow-x: hidden;
+        }
+
+        /* --- ENVELOPE OVERLAY --- */
+        #envelope-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            pointer-events: all;
+        }
+
+        .env-flap {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/cream-paper.png'), #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 10;
+        }
+
+        .env-left { left: 0; border-right: 1px solid #ddd; }
+        .env-right { right: 0; border-left: 1px solid #ddd; }
+
+        .wax-seal {
+            position: absolute;
+            z-index: 20;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--silver-light) 0%, var(--silver-main) 100%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3), inset 0 0 10px rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+            border: 3px solid #fff;
+        }
+
+        .wax-seal:hover {
+            transform: scale(1.1);
+        }
+
+        .wax-seal span {
+            font-family: var(--font-title);
+            font-size: 2.5rem;
+            color: var(--pink-dark);
+        }
+
+        .wax-seal p {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            color: var(--text-main);
+        }
+
+        /* Animación de apertura */
+        .open .env-left { transform: translateX(-100%); }
+        .open .env-right { transform: translateX(100%); }
+        .open .wax-seal { opacity: 0; pointer-events: none; }
+        .hide-overlay { pointer-events: none; opacity: 0; transition: opacity 0.5s ease 1.5s; }
+
+        /* --- MAIN CONTENT --- */
+        #main-content {
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+        }
+        .show-content { opacity: 1 !important; }
+
+        section {
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1, h2, h3 { font-family: var(--font-headings); font-weight: 600; color: var(--pink-dark); }
+        .script-font { font-family: var(--font-title); color: var(--pink-main); font-weight: normal; }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8)), url('assets/hero.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .hero h2 { font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 10px; color: var(--silver-dark); }
+        .hero h1 { font-family: var(--font-title); font-size: 4.5rem; color: var(--pink-dark); text-shadow: 2px 2px 4px rgba(255,255,255,0.8); line-height: 1; margin-bottom: 10px;}
+        .hero .date { font-size: 1.2rem; font-weight: 600; letter-spacing: 2px; margin-top: 20px; color: var(--text-main); }
+
+        /* INVITATION MESSAGE */
+        .message-sec { background: #fff; position: relative; }
+        .message-sec p.quote { font-size: 1.2rem; font-style: italic; max-width: 600px; margin: 0 auto; color: var(--silver-dark); line-height: 1.8; }
+        
+        /* PARENTS & GODPARENTS */
+        .family-sec { background: var(--pink-light); }
+        .family-block { margin-bottom: 40px; }
+        .family-block h3 { font-size: 1rem; color: var(--silver-main); letter-spacing: 3px; margin-bottom: 15px; text-transform: uppercase;}
+        .family-block p { font-size: 1.2rem; margin: 5px 0; color: var(--text-main); font-family: var(--font-headings); }
+
+        /* COUNTDOWN */
+        .countdown-sec { background: linear-gradient(135deg, var(--silver-light), #fff); border-top: 2px solid var(--pink-main); border-bottom: 2px solid var(--pink-main); }
+        .timer-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .time-box {
+            background: #fff; padding: 15px; border-radius: 10px; min-width: 70px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--silver-main);
+        }
+        .time-box span { display: block; font-size: 2rem; font-weight: 600; color: var(--pink-dark); font-family: var(--font-headings); }
+        .time-box p { font-size: 0.7rem; text-transform: uppercase; margin-top: 5px; color: var(--silver-dark); letter-spacing: 1px;}
+
+        /* LOCATIONS */
+        .locations-sec { background: #fff; }
+        .card {
+            background: var(--pink-light); border-radius: 15px; padding: 40px 20px; max-width: 500px; margin: 0 auto 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 2px solid #fff; position: relative;
+        }
+        .card i { font-size: 2.5rem; color: var(--pink-main); margin-bottom: 15px; }
+        .card h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .card p { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.5; color: var(--text-main); }
+        .btn {
+            display: inline-block; padding: 12px 30px; background: var(--pink-dark); color: #fff;
+            text-decoration: none; border-radius: 25px; margin-top: 15px; font-weight: 600; letter-spacing: 1px;
+            transition: background 0.3s ease; text-transform: uppercase; font-size: 0.8rem;
+        }
+        .btn:hover { background: var(--pink-main); }
+
+        /* DETAILS (DRESS CODE & GIFTS) */
+        .details-sec { background: var(--silver-light); }
+        .details-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 900px; margin: 0 auto; }
+        .detail-item { flex: 1; min-width: 280px; background: #fff; padding: 40px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .detail-item h3 { font-size: 2rem; margin-bottom: 15px; font-family: var(--font-title); color: var(--pink-main); }
+        .liverpool-logo { font-weight: bold; color: #e10098; font-size: 1.1rem; display: block; margin: 10px 0;}
+
+        /* GALLERY (SCATTERED STYLE) */
+        .gallery-sec { background: #fff; padding: 80px 10px; overflow: hidden; }
+        .gallery-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1000px; margin: 0 auto; }
+        
+        .polaroid {
+            background: #fff; padding: 10px 10px 25px 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-radius: 2px; transition: transform 0.3s ease;
+        }
+        .polaroid img { width: 100%; height: auto; object-fit: cover; border-radius: 2px; }
+        
+        /* Simulated scattering sizes and rotations */
+        .p-large { width: 280px; }
+        .p-medium { width: 200px; }
+        .p-small { width: 150px; }
+        
+        .rot-right { transform: rotate(4deg); }
+        .rot-left { transform: rotate(-5deg); }
+        .rot-right-more { transform: rotate(8deg); }
+        .rot-left-more { transform: rotate(-8deg); }
+
+        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
+
+        /* STICKY AUDIO BUTTON */
+        #audio-toggle {
+            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
+            background: var(--pink-dark); color: #fff; border: none; border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 1.2rem; cursor: pointer;
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            transition: transform 0.3s ease;
+        }
+        #audio-toggle:hover { transform: scale(1.1); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .timer-container { gap: 10px; }
+            .time-box { min-width: 60px; padding: 10px; }
+            .time-box span { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="assets/cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="audio-toggle" onclick="toggleAudio()">
+        <i class="fas fa-music" id="audio-icon"></i>
+    </button>
+
+    <div id="envelope-overlay">
+        <div class="env-flap env-left"></div>
+        <div class="env-flap env-right"></div>
+        <div class="wax-seal" onclick="openInvitation()">
+            <span>B</span>
+            <p>Abrir</p>
+        </div>
+    </div>
+
+    <div id="main-content">
+        
+        <section class="hero">
+            <h2>Mis XV Años</h2>
+            <h1>Bárbara Fabiana</h1>
+            <p class="date">16 DE AGOSTO 2026</p>
+        </section>
+
+        <section class="gallery-sec" style="padding-bottom: 20px; background: transparent;">
+            <div class="gallery-container">
+                <div class="polaroid p-medium rot-left">
+                    <img src="assets/foto1.jpg" alt="Foto 1">
+                </div>
+                <div class="polaroid p-large rot-right" style="margin-top: 40px;">
+                    <img src="assets/foto2.jpg" alt="Foto 2">
+                </div>
+            </div>
+        </section>
+
+        <section class="message-sec">
+            <h2 class="script-font" style="font-size: 3rem; margin-bottom: 20px;">Bienvenidos</h2>
+            <p class="quote">"Que cada sonrisa y cada abrazo hagan de esta noche un recuerdo eterno."</p>
+        </section>
+
+        <section class="family-sec">
+            <h2 class="script-font" style="font-size: 2.5rem; margin-bottom: 40px;">Con la bendición de Dios y mis padres</h2>
+            
+            <div class="family-block">
+                <h3>Mis Padres</h3>
+                <p>Cristina Santamaría Islas</p>
+                <p>Francisco Fabian Zaragoza Lira</p>
+            </div>
+
+            <div class="family-block">
+                <h3>Mis Padrinos</h3>
+                <p>Laura Lira San German</p>
+                <p>Francisco Zaragoza Avila</p>
+                <p>Ana Laura Zaragoza Lira</p>
+            </div>
+        </section>
+
+        <section class="gallery-sec">
+            <div class="gallery-container">
+                <div class="polaroid p-small rot-right-more">
+                    <img src="assets/foto3.jpg" alt="Foto 3">
+                </div>
+                <div class="polaroid p-large rot-left">
+                    <img src="assets/foto4.jpg" alt="Foto 4">
+                </div>
+                <div class="polaroid p-medium rot-right" style="margin-top: 30px;">
+                    <img src="assets/foto5.jpg" alt="Foto 5">
+                </div>
+            </div>
+        </section>
+
+        <section class="countdown-sec">
+            <h2>Faltan</h2>
+            <div class="timer-container">
+                <div class="time-box"><span id="days">00</span><p>Días</p></div>
+                <div class="time-box"><span id="hours">00</span><p>Hrs</p></div>
+                <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
+                <div class="time-box"><span id="seconds">00</span><p>Seg</p></div>
+            </div>
+        </section>
+
+        <section class="locations-sec">
+            <h2 class="script-font" style="font-size: 3rem; margin-bottom: 40px;">Dónde & Cuándo</h2>
+            
+            <div class="card">
+                <i class="fas fa-church"></i>
+                <h3>Ceremonia Religiosa</h3>
+                <p><strong>17:00 hrs</strong></p>
+                <p>Nuestra Señora de la Paz</p>
+                <p>Río Amacuzac 23, Paseos de Churubusco, Iztapalapa, 09030 CDMX</p>
+                <a href="https://maps.google.com/?q=Nuestra+Señora+de+la+Paz,Río+Amacuzac+23,Iztapalapa,CDMX" target="_blank" class="btn">Ver Mapa</a>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-glass-cheers"></i>
+                <h3>Recepción</h3>
+                <p><strong>19:00 hrs</strong></p>
+                <p>Salón Hacienda Tezontle H3</p>
+                <p>Calle Portal de las Flores, Mz 13, Lt 14, Área Federal Central de Abastos Zona Norte, Iztapalapa, 09040 CDMX</p>
+                <a href="https://maps.google.com/?q=Salón+Hacienda+Tezontle+H3,Portal+de+las+Flores,Iztapalapa,CDMX" target="_blank" class="btn">Ver Mapa</a>
+            </div>
+        </section>
+
+        <section class="details-sec">
+            <div class="details-grid">
+                
+                <div class="detail-item">
+                    <i class="fas fa-tshirt" style="font-size: 2.5rem; color: var(--silver-main); margin-bottom: 15px;"></i>
+                    <h3>Dress Code</h3>
+                    <p style="font-weight: 600; font-size: 1.1rem;">Formal</p>
+                    <p style="margin-top: 10px; color: var(--pink-dark); font-size: 0.9rem;">
+                        <em>* Por favor evitar vestimenta color rosa *</em>
+                    </p>
+                </div>
+
+                <div class="detail-item">
+                    <i class="fas fa-gift" style="font-size: 2.5rem; color: var(--silver-main); margin-bottom: 15px;"></i>
+                    <h3>Mesa de Regalos</h3>
+                    <p>Su presencia es mi mejor regalo, pero si desean tener un detalle conmigo:</p>
+                    <span class="liverpool-logo">Liverpool</span>
+                    <p><strong>XV Barby</strong></p>
+                    <p>Evento: 52010541</p>
+                    <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52010541" target="_blank" class="btn" style="margin-top: 15px; padding: 10px 20px;">Ver Lista</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="gallery-sec">
+            <div class="gallery-container">
+                <div class="polaroid p-large rot-left-more">
+                    <img src="assets/foto6.jpg" alt="Foto 6">
+                </div>
+                <div class="polaroid p-medium rot-right" style="margin-top: 50px;">
+                    <img src="assets/foto7.jpg" alt="Foto 7">
+                </div>
+                <div class="polaroid p-small rot-left" style="margin-top: 20px;">
+                    <img src="assets/foto8.jpg" alt="Foto 8">
+                </div>
+            </div>
+        </section>
+
+        <section class="hero" style="height: auto; padding: 80px 20px; background-image: none; background-color: var(--pink-main);">
+            <h1 style="color: #fff; text-shadow: none;">¡Los Espero!</h1>
+            <p style="color: #fff; font-size: 1.2rem; font-family: var(--font-title);">Bárbara Fabiana</p>
+        </section>
+
+    </div>
+
+    <script>
+        // Lógica del Sobre y Audio
+        const music = document.getElementById("bg-music");
+        const icon = document.getElementById("audio-icon");
+        let isPlaying = false;
+
+        function openInvitation() {
+            // Animación del sobre
+            const overlay = document.getElementById("envelope-overlay");
+            overlay.classList.add("open");
+            setTimeout(() => {
+                overlay.classList.add("hide-overlay");
+            }, 1500);
+
+            // Mostrar contenido principal
+            document.getElementById("main-content").classList.add("show-content");
+
+            // Reproducir música
+            music.play().then(() => {
+                isPlaying = true;
+                icon.classList.remove("fa-music", "fa-play");
+                icon.classList.add("fa-pause");
+            }).catch(error => {
+                console.log("Auto-play prevenido por el navegador", error);
+            });
+        }
+
+        function toggleAudio() {
+            if (isPlaying) {
+                music.pause();
+                icon.classList.remove("fa-pause");
+                icon.classList.add("fa-play");
+            } else {
+                music.play();
+                icon.classList.remove("fa-play");
+                icon.classList.add("fa-pause");
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Lógica de la Cuenta Regresiva (16 de Agosto 2026, 17:00 hrs)
+        const countDownDate = new Date("Aug 16, 2026 17:00:00").getTime();
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
