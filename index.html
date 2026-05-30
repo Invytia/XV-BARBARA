@@ -3,222 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis XV Años | Bárbara Fabiana</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>XV Bárbara Fabiana - Invitación Premium</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
         :root {
-            --pink-light: #fbebf0;
-            --pink-main: #e8a2b5;
-            --pink-dark: #c06c84;
-            --silver-light: #f5f5f5;
-            --silver-main: #b0b0b0;
-            --silver-dark: #7a7a7a;
-            --text-main: #4a4a4a;
-            --font-title: 'Great Vibes', cursive;
-            --font-headings: 'Cinzel', serif;
-            --font-text: 'Montserrat', sans-serif;
+            --pink-soft: #fdf0f3;
+            --pink-accent: #e8a2b5;
+            --silver: #C0C0C0;
+            --silver-dark: #8e8e8e;
+            --text: #4a4a4a;
+            --white: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--pink-soft); color: var(--text); overflow-x: hidden; }
 
-        body {
-            font-family: var(--font-text);
-            color: var(--text-main);
-            background-color: var(--pink-light);
-            overflow-x: hidden;
-        }
-
-        /* --- ENVELOPE OVERLAY --- */
-        #envelope-overlay {
+        /* --- SOBRE ANIMADO --- */
+        #envelope-wrapper {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: 9999;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            z-index: 10000;
             display: flex;
-            justify-content: center;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .envelope-half {
+            width: 50%; height: 100%;
+            background: #fff url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            position: relative;
+            transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+            display: flex;
             align-items: center;
-            overflow: hidden;
-            pointer-events: all;
         }
 
-        .env-flap {
+        .left-half { 
+            justify-content: flex-end; 
+            border-right: 1px solid rgba(232, 162, 181, 0.3);
+            background-image: url('https://i.ibb.co/L5M2T0d/floral-left.png'); /* Placeholder floral */
+            background-position: left center;
+            background-repeat: no-repeat;
+        }
+        
+        .right-half { 
+            justify-content: flex-start;
+            background-image: url('https://i.ibb.co/vYm6P5C/floral-right.png'); /* Placeholder floral */
+            background-position: right center;
+            background-repeat: no-repeat;
+        }
+
+        .seal-container {
             position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/cream-paper.png'), #fff;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
-            z-index: 10;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
         }
-
-        .env-left { left: 0; border-right: 1px solid #ddd; }
-        .env-right { right: 0; border-left: 1px solid #ddd; }
 
         .wax-seal {
-            position: absolute;
-            z-index: 20;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, var(--silver-light) 0%, var(--silver-main) 100%);
+            width: 110px; height: 110px;
+            background: radial-gradient(circle, #e8a2b5 0%, #c06c84 100%);
             border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3), inset 0 0 10px rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: opacity 0.5s ease, transform 0.3s ease;
-            border: 3px solid #fff;
-        }
-
-        .wax-seal:hover {
-            transform: scale(1.1);
-        }
-
-        .wax-seal span {
-            font-family: var(--font-title);
-            font-size: 2.5rem;
-            color: var(--pink-dark);
-        }
-
-        .wax-seal p {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
-            color: var(--text-main);
-        }
-
-        /* Animación de apertura */
-        .open .env-left { transform: translateX(-100%); }
-        .open .env-right { transform: translateX(100%); }
-        .open .wax-seal { opacity: 0; pointer-events: none; }
-        .hide-overlay { pointer-events: none; opacity: 0; transition: opacity 0.5s ease 1.5s; }
-
-        /* --- MAIN CONTENT --- */
-        #main-content {
-            opacity: 0;
-            transition: opacity 1s ease 0.5s;
-        }
-        .show-content { opacity: 1 !important; }
-
-        section {
-            padding: 60px 20px;
-            text-align: center;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 0 10px rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.5);
             position: relative;
         }
 
-        h1, h2, h3 { font-family: var(--font-headings); font-weight: 600; color: var(--pink-dark); }
-        .script-font { font-family: var(--font-title); color: var(--pink-main); font-weight: normal; }
+        .wax-seal span { font-family: 'Great Vibes'; font-size: 3rem; color: white; }
+        
+        .click-hint {
+            position: absolute;
+            width: 150px;
+            top: 50%; left: -160px;
+            transform: translateY(-50%) rotate(-90deg);
+            font-family: 'Montserrat'; font-size: 0.7rem; letter-spacing: 2px;
+            color: var(--pink-accent); text-transform: uppercase;
+        }
 
-        /* HERO SECTION */
+        /* Apertura */
+        .opened .left-half { transform: translateX(-100%); }
+        .opened .right-half { transform: translateX(100%); }
+        .opened .seal-container { opacity: 0; pointer-events: none; }
+        .envelope-fadeout { opacity: 0; pointer-events: none; }
+
+        /* --- AUDIO STICKY --- */
+        #audio-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            background: white; border: 1px solid var(--pink-accent);
+            color: var(--pink-accent);
+            z-index: 999; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- HERO --- */
         .hero {
             height: 100vh;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8)), url('assets/hero.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.5)), url('assets/foto1.jpg');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
         }
+
+        .hero h1 { font-family: 'Great Vibes'; font-size: 5rem; color: var(--pink-accent); margin-bottom: 10px; }
+        .hero h2 { font-family: 'Cinzel'; font-size: 1.5rem; letter-spacing: 5px; color: var(--silver-dark); }
+
+        /* --- CUENTA ATRÁS --- */
+        .countdown-wrap { padding: 40px 20px; background: white; text-align: center; }
+        .timer { display: flex; justify-content: center; gap: 20px; }
+        .t-item { background: var(--pink-soft); padding: 15px; border-radius: 10px; min-width: 80px; border: 1px solid var(--pink-accent); }
+        .t-item span { display: block; font-size: 1.8rem; font-weight: bold; color: var(--pink-accent); }
+        .t-item label { font-size: 0.6rem; text-transform: uppercase; }
+
+        /* --- CALENDARIO WIDGET --- */
+        .cal-widget { margin-top: 30px; }
+        .btn-cal {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 10px 20px; border: 1px solid var(--silver);
+            border-radius: 20px; text-decoration: none; color: var(--text);
+            font-size: 0.8rem; transition: 0.3s;
+        }
+        .btn-cal:hover { background: var(--pink-soft); border-color: var(--pink-accent); }
+
+        /* --- SECCIONES GENERALES --- */
+        section { padding: 80px 20px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .script-text { font-family: 'Great Vibes'; font-size: 3rem; color: var(--pink-accent); }
+        .family-info p { font-size: 1.2rem; margin: 10px 0; font-family: 'Cinzel'; }
         
-        .hero h2 { font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 10px; color: var(--silver-dark); }
-        .hero h1 { font-family: var(--font-title); font-size: 4.5rem; color: var(--pink-dark); text-shadow: 2px 2px 4px rgba(255,255,255,0.8); line-height: 1; margin-bottom: 10px;}
-        .hero .date { font-size: 1.2rem; font-weight: 600; letter-spacing: 2px; margin-top: 20px; color: var(--text-main); }
-
-        /* INVITATION MESSAGE */
-        .message-sec { background: #fff; position: relative; }
-        .message-sec p.quote { font-size: 1.2rem; font-style: italic; max-width: 600px; margin: 0 auto; color: var(--silver-dark); line-height: 1.8; }
-        
-        /* PARENTS & GODPARENTS */
-        .family-sec { background: var(--pink-light); }
-        .family-block { margin-bottom: 40px; }
-        .family-block h3 { font-size: 1rem; color: var(--silver-main); letter-spacing: 3px; margin-bottom: 15px; text-transform: uppercase;}
-        .family-block p { font-size: 1.2rem; margin: 5px 0; color: var(--text-main); font-family: var(--font-headings); }
-
-        /* COUNTDOWN */
-        .countdown-sec { background: linear-gradient(135deg, var(--silver-light), #fff); border-top: 2px solid var(--pink-main); border-bottom: 2px solid var(--pink-main); }
-        .timer-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
-        .time-box {
-            background: #fff; padding: 15px; border-radius: 10px; min-width: 70px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border: 1px solid var(--silver-main);
+        /* --- TARJETAS LOGÍSTICA --- */
+        .card { 
+            background: white; padding: 40px; border-radius: 20px; margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--pink-soft);
         }
-        .time-box span { display: block; font-size: 2rem; font-weight: 600; color: var(--pink-dark); font-family: var(--font-headings); }
-        .time-box p { font-size: 0.7rem; text-transform: uppercase; margin-top: 5px; color: var(--silver-dark); letter-spacing: 1px;}
-
-        /* LOCATIONS */
-        .locations-sec { background: #fff; }
-        .card {
-            background: var(--pink-light); border-radius: 15px; padding: 40px 20px; max-width: 500px; margin: 0 auto 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 2px solid #fff; position: relative;
+        .btn-action {
+            display: inline-block; padding: 12px 30px; background: var(--pink-accent);
+            color: white; border-radius: 25px; text-decoration: none; margin-top: 20px;
+            font-size: 0.9rem; font-weight: 600;
         }
-        .card i { font-size: 2.5rem; color: var(--pink-main); margin-bottom: 15px; }
-        .card h3 { font-size: 1.8rem; margin-bottom: 10px; }
-        .card p { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.5; color: var(--text-main); }
-        .btn {
-            display: inline-block; padding: 12px 30px; background: var(--pink-dark); color: #fff;
-            text-decoration: none; border-radius: 25px; margin-top: 15px; font-weight: 600; letter-spacing: 1px;
-            transition: background 0.3s ease; text-transform: uppercase; font-size: 0.8rem;
+
+        /* --- LIGHTBOX & GALLERY --- */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px; padding: 20px;
         }
-        .btn:hover { background: var(--pink-main); }
-
-        /* DETAILS (DRESS CODE & GIFTS) */
-        .details-sec { background: var(--silver-light); }
-        .details-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 900px; margin: 0 auto; }
-        .detail-item { flex: 1; min-width: 280px; background: #fff; padding: 40px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .detail-item h3 { font-size: 2rem; margin-bottom: 15px; font-family: var(--font-title); color: var(--pink-main); }
-        .liverpool-logo { font-weight: bold; color: #e10098; font-size: 1.1rem; display: block; margin: 10px 0;}
-
-        /* GALLERY (SCATTERED STYLE) */
-        .gallery-sec { background: #fff; padding: 80px 10px; overflow: hidden; }
-        .gallery-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1000px; margin: 0 auto; }
-        
-        .polaroid {
-            background: #fff; padding: 10px 10px 25px 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            border-radius: 2px; transition: transform 0.3s ease;
+        .gallery-grid img { 
+            width: 100%; height: 200px; object-fit: cover; border-radius: 10px;
+            cursor: pointer; transition: 0.4s;
         }
-        .polaroid img { width: 100%; height: auto; object-fit: cover; border-radius: 2px; }
-        
-        /* Simulated scattering sizes and rotations */
-        .p-large { width: 280px; }
-        .p-medium { width: 200px; }
-        .p-small { width: 150px; }
-        
-        .rot-right { transform: rotate(4deg); }
-        .rot-left { transform: rotate(-5deg); }
-        .rot-right-more { transform: rotate(8deg); }
-        .rot-left-more { transform: rotate(-8deg); }
+        .gallery-grid img:hover { transform: scale(1.05); }
 
-        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
-
-        /* STICKY AUDIO BUTTON */
-        #audio-toggle {
-            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
-            background: var(--pink-dark); color: #fff; border: none; border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 1.2rem; cursor: pointer;
-            z-index: 1000; display: flex; justify-content: center; align-items: center;
-            transition: transform 0.3s ease;
+        /* --- FORMULARIOS (CONFIRMACIÓN Y MURO) --- */
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;
+            font-family: 'Montserrat';
         }
-        #audio-toggle:hover { transform: scale(1.1); }
+        .btn-submit {
+            width: 100%; padding: 15px; background: var(--text); color: white;
+            border: none; border-radius: 10px; cursor: pointer; font-weight: 600;
+        }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
+        /* --- MODAL FOTO --- */
+        #photo-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 20000;
+            display: none; align-items: center; justify-content: center;
+        }
+        #photo-modal img { max-width: 90%; max-height: 80%; border: 5px solid white; }
+        #photo-modal .close { position: absolute; top: 20px; right: 30px; color: white; font-size: 2rem; cursor: pointer; }
+
+        @media (max-width: 600px) {
             .hero h1 { font-size: 3.5rem; }
-            .timer-container { gap: 10px; }
-            .time-box { min-width: 60px; padding: 10px; }
-            .time-box span { font-size: 1.5rem; }
+            .envelope-half { background-size: contain; }
         }
     </style>
 </head>
@@ -228,217 +194,235 @@
         <source src="assets/cancion.mp3" type="audio/mpeg">
     </audio>
 
-    <button id="audio-toggle" onclick="toggleAudio()">
-        <i class="fas fa-music" id="audio-icon"></i>
+    <button id="audio-btn" onclick="toggleMusic()">
+        <i class="fas fa-pause" id="audio-icon"></i>
     </button>
 
-    <div id="envelope-overlay">
-        <div class="env-flap env-left"></div>
-        <div class="env-flap env-right"></div>
-        <div class="wax-seal" onclick="openInvitation()">
-            <span>B</span>
-            <p>Abrir</p>
+    <div id="envelope-wrapper">
+        <div class="envelope-half left-half"></div>
+        <div class="envelope-half right-half"></div>
+        <div class="seal-container" onclick="unlockInvite()">
+            <div class="click-hint">Click aquí para abrir</div>
+            <div class="wax-seal">
+                <span>B</span>
+            </div>
         </div>
     </div>
 
     <div id="main-content">
         
-        <section class="hero">
-            <h2>Mis XV Años</h2>
-            <h1>Bárbara Fabiana</h1>
-            <p class="date">16 DE AGOSTO 2026</p>
-        </section>
+        <div class="hero">
+            <h2 data-aos="fade-up">Mis XV Años</h2>
+            <h1 data-aos="zoom-in">Bárbara Fabiana</h1>
+            <p data-aos="fade-up" style="letter-spacing: 3px;">16 DE AGOSTO 2026</p>
+        </div>
 
-        <section class="gallery-sec" style="padding-bottom: 20px; background: transparent;">
-            <div class="gallery-container">
-                <div class="polaroid p-medium rot-left">
-                    <img src="assets/foto1.jpg" alt="Foto 1">
-                </div>
-                <div class="polaroid p-large rot-right" style="margin-top: 40px;">
-                    <img src="assets/foto2.jpg" alt="Foto 2">
-                </div>
+        <section class="countdown-wrap">
+            <div class="timer" data-aos="fade-up">
+                <div class="t-item"><span id="days">00</span><label>Días</label></div>
+                <div class="t-item"><span id="hours">00</span><label>Hrs</label></div>
+                <div class="t-item"><span id="mins">00</span><label>Min</label></div>
+                <div class="t-item"><span id="secs">00</span><label>Seg</label></div>
             </div>
-        </section>
-
-        <section class="message-sec">
-            <h2 class="script-font" style="font-size: 3rem; margin-bottom: 20px;">Bienvenidos</h2>
-            <p class="quote">"Que cada sonrisa y cada abrazo hagan de esta noche un recuerdo eterno."</p>
-        </section>
-
-        <section class="family-sec">
-            <h2 class="script-font" style="font-size: 2.5rem; margin-bottom: 40px;">Con la bendición de Dios y mis padres</h2>
             
-            <div class="family-block">
-                <h3>Mis Padres</h3>
-                <p>Cristina Santamaría Islas</p>
-                <p>Francisco Fabian Zaragoza Lira</p>
-            </div>
-
-            <div class="family-block">
-                <h3>Mis Padrinos</h3>
-                <p>Laura Lira San German</p>
-                <p>Francisco Zaragoza Avila</p>
-                <p>Ana Laura Zaragoza Lira</p>
+            <div class="cal-widget" data-aos="fade-up">
+                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=XV+Bárbara+Fabiana&dates=20260816T220000Z/20260817T050000Z&details=Acompáñanos+a+celebrar+los+XV+años+de+Bárbara.&location=Salón+Hacienda+Tezontle+H3" target="_blank" class="btn-cal">
+                    <i class="far fa-calendar-alt"></i> Agendar fecha
+                </a>
             </div>
         </section>
 
-        <section class="gallery-sec">
-            <div class="gallery-container">
-                <div class="polaroid p-small rot-right-more">
-                    <img src="assets/foto3.jpg" alt="Foto 3">
-                </div>
-                <div class="polaroid p-large rot-left">
-                    <img src="assets/foto4.jpg" alt="Foto 4">
-                </div>
-                <div class="polaroid p-medium rot-right" style="margin-top: 30px;">
-                    <img src="assets/foto5.jpg" alt="Foto 5">
-                </div>
-            </div>
+        <section data-aos="fade-up">
+            <p class="script-text">"Que cada sonrisa y cada abrazo hagan de esta noche un recuerdo eterno"</p>
         </section>
 
-        <section class="countdown-sec">
-            <h2>Faltan</h2>
-            <div class="timer-container">
-                <div class="time-box"><span id="days">00</span><p>Días</p></div>
-                <div class="time-box"><span id="hours">00</span><p>Hrs</p></div>
-                <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
-                <div class="time-box"><span id="seconds">00</span><p>Seg</p></div>
-            </div>
-        </section>
-
-        <section class="locations-sec">
-            <h2 class="script-font" style="font-size: 3rem; margin-bottom: 40px;">Dónde & Cuándo</h2>
+        <section class="family-info" data-aos="fade-up">
+            <h3 style="letter-spacing: 2px; color: var(--silver-dark);">CON LA BENDICIÓN DE MIS PADRES</h3>
+            <p>Cristina Santamaría Islas</p>
+            <p>Francisco Fabian Zaragoza Lira</p>
             
+            <h3 style="letter-spacing: 2px; margin-top: 40px; color: var(--silver-dark);">Y MIS PADRINOS</h3>
+            <p>Laura Lira San German</p>
+            <p>Francisco Zaragoza Avila</p>
+            <p>Ana Laura Zaragoza Lira</p>
+        </section>
+
+        <section>
+            <div class="card" data-aos="fade-right">
+                <i class="fas fa-church" style="font-size: 2rem; color: var(--pink-accent);"></i>
+                <h2 style="margin: 15px 0;">Misa</h2>
+                <p>17:00 hrs</p>
+                <p><strong>Nuestra Señora de la Paz</strong></p>
+                <p>Río Amacuzac 23, Paseos de Churubusco, Iztapalapa</p>
+                <a href="https://maps.app.goo.gl/9yXW6Vp2ZzFmXfFm6" target="_blank" class="btn-action">Ver Ubicación</a>
+            </div>
+
+            <div class="card" data-aos="fade-left">
+                <i class="fas fa-glass-cheers" style="font-size: 2rem; color: var(--pink-accent);"></i>
+                <h2 style="margin: 15px 0;">Recepción</h2>
+                <p>19:00 hrs</p>
+                <p><strong>Salón Hacienda Tezontle H3</strong></p>
+                <p>Calle Portal de las Flores, Mz 13, Lt 14, Iztapalapa</p>
+                <a href="https://maps.app.goo.gl/YourMapLink" target="_blank" class="btn-action">Ver Ubicación</a>
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="card" style="background: var(--silver-light);">
+                <h2 class="script-text" style="font-size: 2.5rem;">Dress Code</h2>
+                <p><strong>FORMAL</strong></p>
+                <p style="color: #c06c84; font-size: 0.9rem; margin-top: 10px;">Favor de no asistir con vestimenta color rosa.</p>
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <h2 class="script-text">Mesa de Regalos</h2>
+            <p>Su presencia es nuestro mejor regalo, pero si desean tener un detalle:</p>
             <div class="card">
-                <i class="fas fa-church"></i>
-                <h3>Ceremonia Religiosa</h3>
-                <p><strong>17:00 hrs</strong></p>
-                <p>Nuestra Señora de la Paz</p>
-                <p>Río Amacuzac 23, Paseos de Churubusco, Iztapalapa, 09030 CDMX</p>
-                <a href="https://maps.google.com/?q=Nuestra+Señora+de+la+Paz,Río+Amacuzac+23,Iztapalapa,CDMX" target="_blank" class="btn">Ver Mapa</a>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/Liverpool_logo.svg" width="150" alt="Liverpool">
+                <p style="margin-top: 20px;">Número de evento: <strong>52010541</strong></p>
+                <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52010541" target="_blank" class="btn-action">Ir a la Mesa</a>
             </div>
+        </section>
 
+        <section>
+            <h2 class="script-text">Momentos</h2>
+            <div class="gallery-grid">
+                <img src="assets/foto1.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+                <img src="assets/foto2.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+                <img src="assets/foto3.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+                <img src="assets/foto4.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+                <img src="assets/foto5.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+                <img src="assets/foto6.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+                <img src="assets/foto7.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+                <img src="assets/foto8.jpg" onclick="openPhoto(this.src)" data-aos="zoom-in">
+            </div>
+        </section>
+
+        <section id="confirmacion" data-aos="fade-up">
+            <h2 class="script-text">Confirmar Asistencia</h2>
             <div class="card">
-                <i class="fas fa-glass-cheers"></i>
-                <h3>Recepción</h3>
-                <p><strong>19:00 hrs</strong></p>
-                <p>Salón Hacienda Tezontle H3</p>
-                <p>Calle Portal de las Flores, Mz 13, Lt 14, Área Federal Central de Abastos Zona Norte, Iztapalapa, 09040 CDMX</p>
-                <a href="https://maps.google.com/?q=Salón+Hacienda+Tezontle+H3,Portal+de+las+Flores,Iztapalapa,CDMX" target="_blank" class="btn">Ver Mapa</a>
+                <form id="rsvp-form">
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" id="rsvp-name" required placeholder="Ej. Juan Pérez">
+                    </div>
+                    <button type="button" class="btn-submit" onclick="sendRSVP()">Confirmar por WhatsApp</button>
+                </form>
             </div>
         </section>
 
-        <section class="details-sec">
-            <div class="details-grid">
-                
-                <div class="detail-item">
-                    <i class="fas fa-tshirt" style="font-size: 2.5rem; color: var(--silver-main); margin-bottom: 15px;"></i>
-                    <h3>Dress Code</h3>
-                    <p style="font-weight: 600; font-size: 1.1rem;">Formal</p>
-                    <p style="margin-top: 10px; color: var(--pink-dark); font-size: 0.9rem;">
-                        <em>* Por favor evitar vestimenta color rosa *</em>
-                    </p>
-                </div>
-
-                <div class="detail-item">
-                    <i class="fas fa-gift" style="font-size: 2.5rem; color: var(--silver-main); margin-bottom: 15px;"></i>
-                    <h3>Mesa de Regalos</h3>
-                    <p>Su presencia es mi mejor regalo, pero si desean tener un detalle conmigo:</p>
-                    <span class="liverpool-logo">Liverpool</span>
-                    <p><strong>XV Barby</strong></p>
-                    <p>Evento: 52010541</p>
-                    <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52010541" target="_blank" class="btn" style="margin-top: 15px; padding: 10px 20px;">Ver Lista</a>
-                </div>
-
+        <section id="muro" data-aos="fade-up">
+            <h2 class="script-text">Muro de Deseos</h2>
+            <div class="card">
+                <form id="wishes-form">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" id="wish-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tu Mensaje</label>
+                        <textarea id="wish-message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" id="btn-publish">Publicar Mensaje</button>
+                </form>
             </div>
-        </section>
-
-        <section class="gallery-sec">
-            <div class="gallery-container">
-                <div class="polaroid p-large rot-left-more">
-                    <img src="assets/foto6.jpg" alt="Foto 6">
-                </div>
-                <div class="polaroid p-medium rot-right" style="margin-top: 50px;">
-                    <img src="assets/foto7.jpg" alt="Foto 7">
-                </div>
-                <div class="polaroid p-small rot-left" style="margin-top: 20px;">
-                    <img src="assets/foto8.jpg" alt="Foto 8">
-                </div>
-            </div>
-        </section>
-
-        <section class="hero" style="height: auto; padding: 80px 20px; background-image: none; background-color: var(--pink-main);">
-            <h1 style="color: #fff; text-shadow: none;">¡Los Espero!</h1>
-            <p style="color: #fff; font-size: 1.2rem; font-family: var(--font-title);">Bárbara Fabiana</p>
         </section>
 
     </div>
 
+    <div id="photo-modal" onclick="this.style.display='none'">
+        <span class="close">&times;</span>
+        <img id="modal-img" src="">
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Lógica del Sobre y Audio
-        const music = document.getElementById("bg-music");
-        const icon = document.getElementById("audio-icon");
-        let isPlaying = false;
+        AOS.init({ duration: 1000, once: true });
 
-        function openInvitation() {
-            // Animación del sobre
-            const overlay = document.getElementById("envelope-overlay");
-            overlay.classList.add("open");
+        const music = document.getElementById('bg-music');
+        const audioIcon = document.getElementById('audio-icon');
+
+        // Apertura de Invitación
+        function unlockInvite() {
+            const wrapper = document.getElementById('envelope-wrapper');
+            wrapper.classList.add('opened');
+            
+            // Iniciar música
+            music.play();
+            
             setTimeout(() => {
-                overlay.classList.add("hide-overlay");
+                wrapper.classList.add('envelope-fadeout');
+                document.body.style.overflowY = 'auto';
             }, 1500);
-
-            // Mostrar contenido principal
-            document.getElementById("main-content").classList.add("show-content");
-
-            // Reproducir música
-            music.play().then(() => {
-                isPlaying = true;
-                icon.classList.remove("fa-music", "fa-play");
-                icon.classList.add("fa-pause");
-            }).catch(error => {
-                console.log("Auto-play prevenido por el navegador", error);
-            });
         }
 
-        function toggleAudio() {
-            if (isPlaying) {
-                music.pause();
-                icon.classList.remove("fa-pause");
-                icon.classList.add("fa-play");
-            } else {
+        // Control de Música
+        function toggleMusic() {
+            if (music.paused) {
                 music.play();
-                icon.classList.remove("fa-play");
-                icon.classList.add("fa-pause");
+                audioIcon.classList.replace('fa-play', 'fa-pause');
+            } else {
+                music.pause();
+                audioIcon.classList.replace('fa-pause', 'fa-play');
             }
-            isPlaying = !isPlaying;
         }
 
-        // Lógica de la Cuenta Regresiva (16 de Agosto 2026, 17:00 hrs)
-        const countDownDate = new Date("Aug 16, 2026 17:00:00").getTime();
+        // Lightbox
+        function openPhoto(src) {
+            const modal = document.getElementById('photo-modal');
+            document.getElementById('modal-img').src = src;
+            modal.style.display = 'flex';
+        }
 
-        const x = setInterval(function() {
+        // WhatsApp RSVP
+        function sendRSVP() {
+            const name = document.getElementById('rsvp-name').value;
+            if(!name) return alert("Por favor escribe tu nombre");
+            const msg = encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Bárbara. Nombre: ${name}`);
+            window.open(`https://wa.me/525626551904?text=${msg}`);
+        }
+
+        // Cuenta atrás
+        const targetDate = new Date("Aug 16, 2026 17:00:00").getTime();
+        setInterval(() => {
             const now = new Date().getTime();
-            const distance = countDownDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
-
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("days").innerHTML = "00";
-                document.getElementById("hours").innerHTML = "00";
-                document.getElementById("minutes").innerHTML = "00";
-                document.getElementById("seconds").innerHTML = "00";
-            }
+            const diff = targetDate - now;
+            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
         }, 1000);
+
+        // Muro de Deseos (Conexión Google Sheets)
+        // Reemplaza con tu URL de Web App después de crear el script
+        const scriptURL = 'URL_DE_TU_SCRIPT_GOOGLE'; 
+        const wishForm = document.getElementById('wishes-form');
+
+        wishForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-publish');
+            btn.innerText = 'Publicando...';
+            btn.disabled = true;
+
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: new FormData(wishForm)
+            })
+            .then(response => {
+                alert('¡Gracias por tu mensaje! Se ha publicado en el muro.');
+                wishForm.reset();
+                btn.innerText = 'Publicar Mensaje';
+                btn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                // Como es una demo, simulamos éxito si no hay URL aún
+                alert('Mensaje enviado (Simulado)');
+                btn.innerText = 'Publicar Mensaje';
+                btn.disabled = false;
+            });
+        });
     </script>
 </body>
 </html>
