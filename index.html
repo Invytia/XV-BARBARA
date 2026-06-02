@@ -677,7 +677,7 @@
             <div class="glass-card" data-aos="fade-up" style="max-width:700px;margin:0 auto;">
                 <p class="subtitle">Mesa de Regalos</p>
                 <p style="margin-bottom:24px;font-family:'Cormorant Garamond';font-size:1.1rem;color:var(--silver-text);">Su presencia es nuestro mejor regalo, pero si desean tener un detalle:</p>
-                <img src="assets/liverpool.jpg" width="110" alt="Liverpool" style="margin-bottom:18px;opacity:0.75;display:block;margin-left:auto;margin-right:auto;">
+                <img src="assts/liverpool.jpg" width="110" alt="Liverpool" style="margin-bottom:18px;opacity:0.75;display:block;margin-left:auto;margin-right:auto;">
                 <p class="info-text">Evento <strong style="color:var(--pink-dark);">52010541</strong></p>
                 <p class="info-text" style="margin-bottom:24px;font-family:'Cormorant Garamond';font-style:italic;">XV Barby</p>
                 <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52010541" target="_blank" class="btn-elegant">
@@ -761,6 +761,85 @@
     <script>
         AOS.init({ duration:1200, once:true, offset:100 });
 
+        /* ---- BRILLITOS DORADOS ---- */
+        function launchGlitter() {
+            const canvas = document.createElement('canvas');
+            canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const COLORS = ['#c9a96e','#e8d5a3','#f5e6c0','#fff8e7','#d4b87a','#ffe8a0','#ffffff'];
+            const SHAPES = ['circle','square','diamond','star'];
+            const COUNT  = 160;
+            const particles = [];
+
+            for (let i = 0; i < COUNT; i++) {
+                const size = Math.random() * 7 + 2;
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: -20 - Math.random() * canvas.height * 0.6,
+                    vx: (Math.random() - 0.5) * 1.8,
+                    vy: Math.random() * 3.5 + 1.5,
+                    rot: Math.random() * Math.PI * 2,
+                    vrot: (Math.random() - 0.5) * 0.18,
+                    size,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
+                    alpha: 1,
+                    flicker: Math.random() * Math.PI * 2,
+                    fspeed: 0.06 + Math.random() * 0.08,
+                    delay: Math.random() * 60,
+                });
+            }
+
+            let frame = 0;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                for (const p of particles) {
+                    if (frame < p.delay) { alive = true; continue; }
+                    p.x += p.vx; p.y += p.vy; p.rot += p.vrot; p.flicker += p.fspeed;
+                    if (p.y > canvas.height * 0.6) p.alpha -= 0.022;
+                    if (p.alpha <= 0 || p.y > canvas.height + 20) continue;
+                    alive = true;
+                    const glimmer = 0.6 + 0.4 * Math.sin(p.flicker);
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha * glimmer;
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.fillStyle = p.color;
+                    ctx.shadowColor = '#c9a96e';
+                    ctx.shadowBlur = 6;
+                    const s = p.size;
+                    if (p.shape === 'circle') {
+                        ctx.beginPath(); ctx.arc(0, 0, s * 0.6, 0, Math.PI * 2); ctx.fill();
+                    } else if (p.shape === 'square') {
+                        ctx.fillRect(-s/2, -s/2, s, s);
+                    } else if (p.shape === 'diamond') {
+                        ctx.beginPath();
+                        ctx.moveTo(0,-s); ctx.lineTo(s*0.6,0); ctx.lineTo(0,s); ctx.lineTo(-s*0.6,0);
+                        ctx.closePath(); ctx.fill();
+                    } else {
+                        ctx.beginPath();
+                        for (let j = 0; j < 5; j++) {
+                            const a1 = (j*4*Math.PI/5) - Math.PI/2;
+                            const a2 = a1 + 2*Math.PI/5;
+                            ctx.lineTo(Math.cos(a1)*s, Math.sin(a1)*s);
+                            ctx.lineTo(Math.cos(a2)*s*0.4, Math.sin(a2)*s*0.4);
+                        }
+                        ctx.closePath(); ctx.fill();
+                    }
+                    ctx.restore();
+                }
+                frame++;
+                if (alive || frame < 80) requestAnimationFrame(draw);
+                else canvas.remove();
+            }
+            draw();
+        }
+
         /* ---- ENVELOPE ---- */
         const music = document.getElementById('bg-music');
         const audioIcon = document.getElementById('audio-icon');
@@ -769,6 +848,7 @@
         function unlockInvite() {
             const wrapper = document.getElementById('envelope-wrapper');
             wrapper.classList.add('opened');
+            launchGlitter();
             music.play().then(() => { hasStarted=true; audioIcon.classList.replace('fa-play','fa-pause'); }).catch(()=>{});
             setTimeout(() => {
                 wrapper.classList.add('envelope-fadeout');
@@ -898,7 +978,7 @@
         });
 
         /* ── Apps Script URL ── PEGAR URL DEL WEB APP AQUÍ ────────────────── */
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec";
+        const APPS_SCRIPT_URL = "PEGA_AQUI_LA_URL_DEL_WEB_APP";
 
         async function postToSheet(payload) {
             const res = await fetch(APPS_SCRIPT_URL, {
@@ -918,7 +998,7 @@
             window.open(`https://wa.me/525626551904?text=${msg}`, '_blank');
 
             // 2. Guarda en Sheets (si el URL ya fue configurado)
-            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec") {
+            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PEGA_AQUI_LA_URL_DEL_WEB_APP") {
                 try {
                     await postToSheet({ action:"confirmacion", nombre:name, via:"WhatsApp + Web" });
                 } catch(e) { /* silencioso */ }
@@ -936,7 +1016,7 @@
             btn.disabled  = true;
 
             let guardado = false;
-            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec") {
+            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PEGA_AQUI_LA_URL_DEL_WEB_APP") {
                 try {
                     const res = await postToSheet({ action:"firma", nombre, mensaje });
                     guardado = res.ok;
