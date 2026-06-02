@@ -677,7 +677,7 @@
             <div class="glass-card" data-aos="fade-up" style="max-width:700px;margin:0 auto;">
                 <p class="subtitle">Mesa de Regalos</p>
                 <p style="margin-bottom:24px;font-family:'Cormorant Garamond';font-size:1.1rem;color:var(--silver-text);">Su presencia es nuestro mejor regalo, pero si desean tener un detalle:</p>
-                <img src="assets/liverpool.jpg" width="110" alt="Liverpool" style="margin-bottom:18px;opacity:0.75;display:block;margin-left:auto;margin-right:auto;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/Liverpool_logo.svg" width="110" alt="Liverpool" style="margin-bottom:18px;opacity:0.75;display:block;margin-left:auto;margin-right:auto;">
                 <p class="info-text">Evento <strong style="color:var(--pink-dark);">52010541</strong></p>
                 <p class="info-text" style="margin-bottom:24px;font-family:'Cormorant Garamond';font-style:italic;">XV Barby</p>
                 <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52010541" target="_blank" class="btn-elegant">
@@ -897,25 +897,60 @@
             if (e.key==='ArrowRight') lbNav(1);
         });
 
-        /* ---- RSVP ---- */
-        function sendRSVP() {
-            const name = document.getElementById('rsvp-name').value;
-            if (!name) return alert("Por favor ingresa tu nombre.");
-            const msg = encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Bárbara. Nombre: ${name}`);
-            window.open(`https://wa.me/525626551904?text=${msg}`, '_blank');
+        /* ── Apps Script URL ── PEGAR URL DEL WEB APP AQUÍ ────────────────── */
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec";
+
+        async function postToSheet(payload) {
+            const res = await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify(payload),
+            });
+            return res.json();
         }
 
-        /* ---- WISHES ---- */
-        document.getElementById('wishes-form').addEventListener('submit', e => {
+        /* ---- RSVP ---- */
+        async function sendRSVP() {
+            const name = document.getElementById('rsvp-name').value.trim();
+            if (!name) return alert("Por favor ingresa tu nombre.");
+
+            // 1. Abre WhatsApp
+            const msg = encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Bárbara. Nombre: ${name}`);
+            window.open(`https://wa.me/525626551904?text=${msg}`, '_blank');
+
+            // 2. Guarda en Sheets (si el URL ya fue configurado)
+            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec") {
+                try {
+                    await postToSheet({ action:"confirmacion", nombre:name, via:"WhatsApp + Web" });
+                } catch(e) { /* silencioso */ }
+            }
+        }
+
+        /* ---- LIBRO DE FIRMAS ---- */
+        document.getElementById('wishes-form').addEventListener('submit', async e => {
             e.preventDefault();
-            const btn = document.getElementById('btn-publish');
-            btn.innerText = 'Enviando...'; btn.disabled = true;
+            const btn     = document.getElementById('btn-publish');
+            const nombre  = document.getElementById('wish-name').value.trim();
+            const mensaje = document.getElementById('wish-message').value.trim();
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            btn.disabled  = true;
+
+            let guardado = false;
+            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec") {
+                try {
+                    const res = await postToSheet({ action:"firma", nombre, mensaje });
+                    guardado = res.ok;
+                } catch(e) { /* silencioso */ }
+            }
+
             setTimeout(() => {
-                alert('¡Mensaje guardado, gracias!');
+                alert(guardado
+                    ? `¡Gracias, ${nombre}! Tu mensaje fue guardado 💕`
+                    : '¡Mensaje recibido, gracias!');
                 e.target.reset();
                 btn.innerHTML = '<i class="fas fa-feather-alt"></i> Dejar Mensaje';
-                btn.disabled = false;
-            }, 1500);
+                btn.disabled  = false;
+            }, guardado ? 0 : 800);
         });
     </script>
 </body>
