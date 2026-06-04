@@ -112,10 +112,8 @@
 
         /* ===== HERO ===== */
    .hero {
-    /* La foto es ~4:3, entonces height = width × (3/4) = 75vw */
-    /* Pero queremos solo la zona central, así que usamos ~85vw */
     height: 75vw;
-    min-height: 520px;   /* mínimo razonable en desktop */
+    min-height: 520px;
     max-height: 100vh;
     position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -134,11 +132,15 @@
             position:absolute; inset:0; z-index:1;
             pointer-events:none; opacity:0.09;
         }
-    .hero-img {
-    position: absolute; inset: 0; z-index: 2;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center 15%;
+   .hero-img {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 100%;        /* ocupa todo el ancho */
+    height: auto;       /* alto se ajusta a la proporción real */
+    object-fit: unset;  /* desactiva cover/contain */
+    min-width: 100%;
 }
         /* Overlay más sutil — la foto respira en el 70% superior */
         .hero-overlay {
