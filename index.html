@@ -1008,7 +1008,7 @@
         });
 
         /* ── Apps Script URL ── PEGAR URL DEL WEB APP AQUÍ ────────────────── */
-        const APPS_SCRIPT_URL = "PEGA_AQUI_LA_URL_DEL_WEB_APP";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec";
 
         async function postToSheet(payload) {
             const res = await fetch(APPS_SCRIPT_URL, {
@@ -1028,7 +1028,7 @@
             window.open(`https://wa.me/525626551904?text=${msg}`, '_blank');
 
             // 2. Guarda en Sheets (si el URL ya fue configurado)
-            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PEGA_AQUI_LA_URL_DEL_WEB_APP") {
+            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec") {
                 try {
                     await postToSheet({ action:"confirmacion", nombre:name, via:"WhatsApp + Web" });
                 } catch(e) { /* silencioso */ }
@@ -1046,7 +1046,7 @@
             btn.disabled  = true;
 
             let guardado = false;
-            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PEGA_AQUI_LA_URL_DEL_WEB_APP") {
+            if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbwRMWvfet6ScQvLXBKsU0KEAxogOjX8obVJax5VClDPvFCzsS3hvajQlmcf0P0Nlm96Qg/exec") {
                 try {
                     const res = await postToSheet({ action:"firma", nombre, mensaje });
                     guardado = res.ok;
