@@ -111,36 +111,56 @@
         #audio-btn:hover { background:#fff; transform:translateY(-3px); }
 
         /* ===== HERO ===== */
-   .hero {
-    height: 90vw;          /* más alto para mostrar todo el alto de la foto */
-    min-height: 520px;
-    max-height: 100vh;
+  .hero {
     position: relative;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; overflow: hidden;
+    width: 100%;
+    /* El hero se adapta al alto natural de la imagen */
+    display: block;
+    overflow: hidden;
+    text-align: center;
 }
 
-        .hero::before {
-            content:''; position:absolute; inset:0; z-index:0;
-            background:
-                radial-gradient(ellipse 90% 70% at 50% 15%, rgba(230,165,185,0.7) 0%, transparent 65%),
-                radial-gradient(ellipse 60% 50% at 85% 75%, rgba(201,116,138,0.3) 0%, transparent 55%),
-                radial-gradient(ellipse 55% 60% at 15% 80%, rgba(160,73,95,0.22) 0%, transparent 55%),
-                linear-gradient(155deg, #f9dfe8 0%, #efccd8 35%, #e6bacb 65%, #daa8bc 100%);
-        }
-        .hero-deco {
-            position:absolute; inset:0; z-index:1;
-            pointer-events:none; opacity:0.09;
-        }
- .hero-img {
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
+.hero::before {
+    content:''; position:absolute; inset:0; z-index:0;
+    background:
+        radial-gradient(ellipse 90% 70% at 50% 15%, rgba(230,165,185,0.7) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 85% 75%, rgba(201,116,138,0.3) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 60% at 15% 80%, rgba(160,73,95,0.22) 0%, transparent 55%),
+        linear-gradient(155deg, #f9dfe8 0%, #efccd8 35%, #e6bacb 65%, #daa8bc 100%);
+}
+
+.hero-deco {
+    position:absolute; inset:0; z-index:1;
+    pointer-events:none; opacity:0.09;
+}
+
+.hero-img {
+    position: relative;   /* ← clave: fluye normal, el hero toma su alto */
     z-index: 2;
     width: 100%;
-    height: auto;
-    object-fit: unset;
-    min-width: 100%;
+    height: auto;         /* respeta proporción exacta */
+    display: block;
+}
+
+/* Overlay ahora sobre la imagen */
+.hero-overlay {
+    position: absolute;
+    inset: 0; z-index: 3;
+    background: linear-gradient(
+        to bottom,
+        rgba(30,8,14,0.0)  0%,
+        rgba(30,8,14,0.0)  35%,
+        rgba(30,8,14,0.35) 60%,
+        rgba(30,8,14,0.70) 80%,
+        rgba(30,8,14,0.88) 100%
+    );
+}
+
+.hero-content {
+    position: absolute;   /* encima de la foto */
+    z-index: 4;
+    bottom: 0; left: 0; right: 0;
+    padding: 0 40px 52px;
 }
         /* Overlay más sutil — la foto respira en el 70% superior */
         .hero-overlay {
